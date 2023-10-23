@@ -14,6 +14,7 @@ import re
 import hashlib
 from urllib.parse import urljoin
 from urllib import robotparser
+import threading
 
 #### Configure logging ###########################
 # Create a logging instance
@@ -237,6 +238,11 @@ def set_request_delay():
     except ValueError:
         messagebox.showerror("Invalid Input", "Please enter a valid numeric value for the delay.")
 
+# Function to start web scraping in a separate thread
+def start_scraping_thread():
+    progress_var.set(0)  # Reset progress bar
+    t = threading.Thread(target=start_scraping, args=(progress_var,))
+    t.start()
 
 # Create and place widgets in the GUI
 # Create the main application window ##################################
@@ -264,7 +270,8 @@ pages_entry = ttk.Entry(root, width=5)
 format_label = ttk.Label(root, text="Storage Format:")
 format_var = tk.StringVar(value="json")
 format_options = ttk.Combobox(root, textvariable=format_var, values=["json", "csv", "xml", "txt"])
-start_button = ttk.Button(root, text="Start Scraping", command=start_scraping)
+start_button = ttk.Button(root, text="Start Scraping", command=start_scraping_thread)  # Use the threading version of the function
+
 
 search_label = ttk.Label(root, text="Search Data:")
 search_entry = ttk.Entry(root, width=40)
