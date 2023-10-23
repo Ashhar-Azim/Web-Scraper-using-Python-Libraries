@@ -104,7 +104,7 @@ def scrape_page(url, target_element, relevance_keywords, scraped_data, progress_
             logger.error(f"An error occurred while scraping the page: {error}", exc_info=True)
         time.sleep(REQUEST_DELAY)
 
-    progress_var.set(len(scraped_data))  # Update the progress vari
+    progress_var.set(len(scraped_data))
 
 # Function to apply regular expressions to the scraped data
 def apply_regular_expression(scraped_data, regex_pattern):
