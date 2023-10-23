@@ -9,10 +9,27 @@ import xml.etree.ElementTree as ET
 import random
 import time
 import logging
+import sys
 
-# Configure logging
-logging.basicConfig(filename='scraper_log.txt', level=logging.INFO,
-                    format='%(asctime)s - %(levelname)s - %(message)s')
+#### Configure logging ###########################
+# Create a logging instance
+logger = logging.getLogger("web_scraper")
+logger.setLevel(logging.DEBUG)  # Set the minimum logging level
+
+# Create a log formatter
+log_formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+
+# Create a log file handler
+log_file = "scraper_log.txt"
+log_file_handler = logging.FileHandler(log_file)
+log_file_handler.setFormatter(log_formatter)
+logger.addHandler(log_file_handler)
+
+# Create a console handler for real-time logging
+console_handler = logging.StreamHandler(sys.stdout)
+console_handler.setFormatter(log_formatter)
+logger.addHandler(console_handler))
+#################################################
 
 # Create the main application window
 root = tk.Tk()
@@ -60,15 +77,15 @@ def scrape_page(url, target_element, relevance_keywords, scraped_data):
                     scraped_data.append(text)
 
         # Log a successful scrape
-        logging.info(f"Scraped data from {url}")
+        logger.info(f"Scraped data from {url}")
 
     except requests.exceptions.RequestException as request_error:
         # Log a failed scrape
-        logging.error(f"Failed to retrieve the web page '{url}'. Error: {request_error}")
+        logger.error(f"Failed to retrieve the web page '{url}'. Error: {request_error}")
     except Exception as error:
-        # Log a general error
-        logging.error(f"An error occurred while scraping the page: {error}")
-    time.sleep(REQUEST_DELAY)
+        # Log a general error, including traceback
+        logger.error(f"An error occurred while scraping the page: {error}", exc_info=True)
+    time.sleep(request_delay)
 
 # Function to save data to various file formats
 def save_data(scraped_data, file_format):
