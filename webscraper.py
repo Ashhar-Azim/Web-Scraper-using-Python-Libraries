@@ -31,7 +31,12 @@ console_handler.setFormatter(log_formatter)
 logger.addHandler(console_handler))
 #################################################
 
-# Create the main application window
+# Directory to store cached data
+cache_directory = "cache"
+if not os.path.exists(cache_directory):
+    os.makedirs(cache_directory)
+
+# Create the main application window ##################################
 root = tk.Tk()
 root.title("Web Scraper")
 root.geometry("600x400")
@@ -43,6 +48,7 @@ style.theme_use("clam")
 style.configure("TButton", foreground="white", background="#444")
 style.configure("TLabel", foreground="white", background="#333")
 style.configure("TEntry", background="#444", foreground="white")
+######################################################################
 
 # List of user agent headers for rotation
 USER_AGENTS = [
@@ -55,37 +61,48 @@ REQUEST_DELAY = 2  # Delay between requests in seconds
 
 # Function to scrape and process a single page
 def scrape_page(url, target_element, relevance_keywords, scraped_data):
-    try:
-        # Rotate user agent headers
-        headers = {'User-Agent': random.choice(USER_AGENTS)}
-        response = requests.get(url, headers=headers)
-        response.raise_for_status()
-        soup = BeautifulSoup(response.text, 'html.parser')
+    cache_file = os.path.join(cache_directory, hashlib.md5(url.encode()).hexdigest() + '.cache')
+    
+    if os.path.exists(cache_file):
+        with open(cache_file, 'r', encoding='utf-8') as cache:
+            cached_data = json.load(cache)
+            scraped_data.extend(cached_data)
+            logger.info(f"Loaded data from cache for {url}")
+    else:
+        try:
+            # Rotate user agent headers
+            headers = {'User-Agent': random.choice(USER_AGENTS)}
+            response = requests.get(url, headers=headers)
+            response.raise_for_status()
+            soup = BeautifulSoup(response.text, 'html.parser')
 
-        elements = soup.find_all(target_element)
+            elements = soup.find_all(target_element)
 
-        if elements:
-            for element in elements:
-                text = element.text
+            if elements:
+                for element in elements:
+                    text = element.text
 
-                # Check for relevance based on user-defined keywords
-                text_lower = text.lower()
-                relevant = any(keyword in text_lower for keyword in relevance_keywords)
+                    # Check for relevance based on user-defined keywords
+                    text_lower = text.lower()
+                    relevant = any(keyword in text_lower for keyword in relevance_keywords)
 
-                # If relevant, store the content in the data list
-                if relevant:
-                    scraped_data.append(text)
+                    # If relevant, store the content in the data list
+                    if relevant:
+                        scraped_data.append(text)
 
-        # Log a successful scrape
-        logger.info(f"Scraped data from {url}")
+            # Log a successful scrape
+            logger.info(f"Scraped data from {url}")
 
-    except requests.exceptions.RequestException as request_error:
-        # Log a failed scrape
-        logger.error(f"Failed to retrieve the web page '{url}'. Error: {request_error}")
-    except Exception as error:
-        # Log a general error, including traceback
-        logger.error(f"An error occurred while scraping the page: {error}", exc_info=True)
-    time.sleep(request_delay)
+            # Cache the scraped data
+            with open(cache_file, 'w', encoding='utf-8') as cache:
+                json.dump(scraped_data, cache, ensure_ascii=False, indent=2)
+        except requests.exceptions.RequestException as request_error:
+            # Log a failed scrape
+            logger.error(f"Failed to retrieve the web page '{url}'. Error: {request_error}")
+        except Exception as error:
+            # Log a general error, including traceback
+            logger.error(f"An error occurred while scraping the page: {error}", exc_info=True)
+        time.sleep(request_delay)
 
 # Function to save data to various file formats
 def save_data(scraped_data, file_format):
