@@ -1,6 +1,5 @@
 import tkinter as tk
-from tkinter import ttk
-from tkinter import messagebox
+from tkinter import ttk, messagebox
 import requests
 from bs4 import BeautifulSoup
 import json
@@ -12,8 +11,9 @@ import logging
 import os
 import sys
 import re
-import robotparser
+import hashlib
 from urllib.parse import urljoin
+from urllib import robotparser
 
 #### Configure logging ###########################
 # Create a logging instance
@@ -39,20 +39,6 @@ logger.addHandler(console_handler))
 cache_directory = "cache"
 if not os.path.exists(cache_directory):
     os.makedirs(cache_directory)
-
-# Create the main application window ##################################
-root = tk.Tk()
-root.title("Web Scraper")
-root.geometry("600x400")
-root.configure(bg="#333")
-
-# Define dark-themed style
-style = ttk.Style()
-style.theme_use("clam")
-style.configure("TButton", foreground="white", background="#444")
-style.configure("TLabel", foreground="white", background="#333")
-style.configure("TEntry", background="#444", foreground="white")
-######################################################################
 
 # List of user agent headers for rotation
 USER_AGENTS = [
@@ -85,7 +71,6 @@ def scrape_page(url, target_element, relevance_keywords, scraped_data, progress_
             logger.info(f"Loaded data from cache for {url}")
     else:
         try:
-            # Rotate user agent headers
             headers = {'User-Agent': random.choice(USER_AGENTS)}
             response = requests.get(url, headers=headers)
             response.raise_for_status()
@@ -117,9 +102,9 @@ def scrape_page(url, target_element, relevance_keywords, scraped_data, progress_
         except Exception as error:
             # Log a general error, including traceback
             logger.error(f"An error occurred while scraping the page: {error}", exc_info=True)
-        time.sleep(request_delay)
-    
-    progress_var.set(len(scraped_data))
+        time.sleep(REQUEST_DELAY)
+
+    progress_var.set(len(scraped_data))  # Update the progress vari
 
 # Function to apply regular expressions to the scraped data
 def apply_regular_expression(scraped_data, regex_pattern):
@@ -228,6 +213,20 @@ def set_request_delay():
 
 
 # Create and place widgets in the GUI
+# Create the main application window ##################################
+root = tk.Tk()
+root.title("Web Scraper")
+root.geometry("600x400")
+root.configure(bg="#333")
+
+# Define dark-themed style
+style = ttk.Style()
+style.theme_use("clam")
+style.configure("TButton", foreground="white", background="#444")
+style.configure("TLabel", foreground="white", background="#333")
+style.configure("TEntry", background="#444", foreground="white")
+######################################################################
+
 url_label = ttk.Label(root, text="URL:")
 url_entry = ttk.Entry(root, width=40)
 element_label = ttk.Label(root, text="HTML Element:")
@@ -271,7 +270,7 @@ request_delay_label.grid(row=9, column=0, pady=10)
 request_delay_entry.grid(row=9, column=1, padx=10, pady=10)
 set_delay_button.grid(row=10, column=0, columnspan=2, pady=10)
 
-progress_var = tk.IntVar()
+# Create a progress bar to monitor scraping progress
 progress_label = ttk.Label(root, text="Scraping Progress:")
 progress_bar = ttk.Progressbar(root, variable=progress_var, maximum=100)
 progress_label.grid(row=11, column=0, pady=10)
