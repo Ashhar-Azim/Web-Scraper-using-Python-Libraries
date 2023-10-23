@@ -9,7 +9,11 @@ import xml.etree.ElementTree as ET
 import random
 import time
 import logging
+import os
 import sys
+import re
+import robotparser
+from urllib.parse import urljoin
 
 #### Configure logging ###########################
 # Create a logging instance
@@ -30,6 +34,17 @@ console_handler = logging.StreamHandler(sys.stdout)
 console_handler.setFormatter(log_formatter)
 logger.addHandler(console_handler))
 #################################################
+
+# Function to check robots.txt compliance
+def is_allowed_by_robots(url):
+    try:
+        rp = robotparser.RobotFileParser()
+        rp.set_url(urljoin(url, "/robots.txt"))
+        rp.read()
+        return rp.can_fetch(USER_AGENTS[0], url)
+    except Exception as e:
+        print(f"An error occurred while checking robots.txt compliance for {url}: {e}")
+        return False
 
 # Directory to store cached data
 cache_directory = "cache"
