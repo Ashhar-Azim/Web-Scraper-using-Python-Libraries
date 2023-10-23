@@ -35,17 +35,6 @@ console_handler.setFormatter(log_formatter)
 logger.addHandler(console_handler))
 #################################################
 
-# Function to check robots.txt compliance
-def is_allowed_by_robots(url):
-    try:
-        rp = robotparser.RobotFileParser()
-        rp.set_url(urljoin(url, "/robots.txt"))
-        rp.read()
-        return rp.can_fetch(USER_AGENTS[0], url)
-    except Exception as e:
-        print(f"An error occurred while checking robots.txt compliance for {url}: {e}")
-        return False
-
 # Directory to store cached data
 cache_directory = "cache"
 if not os.path.exists(cache_directory):
@@ -74,10 +63,21 @@ USER_AGENTS = [
 # Rate limiting parameters
 REQUEST_DELAY = 2  # Delay between requests in seconds
 
+# Function to check robots.txt compliance
+def is_allowed_by_robots(url):
+    try:
+        rp = robotparser.RobotFileParser()
+        rp.set_url(urljoin(url, "/robots.txt"))
+        rp.read()
+        return rp.can_fetch(USER_AGENTS[0], url)
+    except Exception as e:
+        print(f"An error occurred while checking robots.txt compliance for {url}: {e}")
+        return False
+
 # Function to scrape and process a single page
-def scrape_page(url, target_element, relevance_keywords, scraped_data):
+def scrape_page(url, target_element, relevance_keywords, scraped_data, progress_var):
     cache_file = os.path.join(cache_directory, hashlib.md5(url.encode()).hexdigest() + '.cache')
-    
+
     if os.path.exists(cache_file):
         with open(cache_file, 'r', encoding='utf-8') as cache:
             cached_data = json.load(cache)
@@ -118,6 +118,8 @@ def scrape_page(url, target_element, relevance_keywords, scraped_data):
             # Log a general error, including traceback
             logger.error(f"An error occurred while scraping the page: {error}", exc_info=True)
         time.sleep(request_delay)
+    
+    progress_var.set(len(scraped_data))
 
 # Function to apply regular expressions to the scraped data
 def apply_regular_expression(scraped_data, regex_pattern):
@@ -183,7 +185,7 @@ def search_and_filter_data(scraped_data):
         messagebox.showerror("Error", f"An error occurred while displaying results: {e}")
 
 # Function to start the scraping process
-def start_scraping():
+def start_scraping(progress_var):
     try:
         url = url_entry.get()
         target_element = element_entry.get()
@@ -191,7 +193,7 @@ def start_scraping():
         max_pages = int(pages_entry.get())
         file_format = format_var.get()
 
-        scraped_data = scrape_with_pagination(url, target_element, relevance_keywords, max_pages)
+        scraped_data = scrape_with_pagination(url, target_element, relevance_keywords, max_pages, progress_var)
 
         save_data(scraped_data, file_format)
         messagebox.showinfo("Scraping Complete", "Scraping and data saving complete.")
@@ -268,5 +270,11 @@ result_text.grid(row=8, column=0, columnspan=2, padx=10, pady=10)
 request_delay_label.grid(row=9, column=0, pady=10)
 request_delay_entry.grid(row=9, column=1, padx=10, pady=10)
 set_delay_button.grid(row=10, column=0, columnspan=2, pady=10)
+
+progress_var = tk.IntVar()
+progress_label = ttk.Label(root, text="Scraping Progress:")
+progress_bar = ttk.Progressbar(root, variable=progress_var, maximum=100)
+progress_label.grid(row=11, column=0, pady=10)
+progress_bar.grid(row=11, column=1, padx=10, pady=10)
 
 root.mainloop()
