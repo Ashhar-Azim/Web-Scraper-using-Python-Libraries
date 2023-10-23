@@ -60,6 +60,32 @@ def is_allowed_by_robots(url):
         print(f"An error occurred while checking robots.txt compliance for {url}: {e}")
         return False
 
+# Function to load data from cache
+def load_data_from_cache(url, cache_directory):
+    cache_file = os.path.join(cache_directory, hashlib.md5(url.encode()).hexdigest() + '.cache')
+    cached_data = []
+
+    if os.path.exists(cache_file):
+        try:
+            with open(cache_file, 'r', encoding='utf-8') as cache:
+                cached_data = json.load(cache)
+                logger.info(f"Loaded data from cache for {url}")
+        except Exception as e:
+            logger.error(f"Error loading data from cache for {url}: {e}")
+
+    return cached_data
+
+# Function to create data in a cache
+def save_data_to_cache(url, data, cache_directory):
+    cache_file = os.path.join(cache_directory, hashlib.md5(url.encode()).hexdigest() + '.cache')
+
+    try:
+        with open(cache_file, 'w', encoding='utf-8') as cache:
+            json.dump(data, cache, ensure_ascii=False, indent=2)
+            logger.info(f"Saved data to cache for {url}")
+    except Exception as e:
+        logger.error(f"Error saving data to cache for {url}: {e}")
+
 # Function to scrape and process a single page
 def scrape_page(url, target_element, relevance_keywords, scraped_data, progress_var):
     cache_file = os.path.join(cache_directory, hashlib.md5(url.encode()).hexdigest() + '.cache')
