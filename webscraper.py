@@ -104,6 +104,15 @@ def scrape_page(url, target_element, relevance_keywords, scraped_data):
             logger.error(f"An error occurred while scraping the page: {error}", exc_info=True)
         time.sleep(request_delay)
 
+# Function to apply regular expressions to the scraped data
+def apply_regular_expression(scraped_data, regex_pattern):
+    filtered_data = []
+    for item in scraped_data:
+        matches = re.findall(regex_pattern, item)
+        if matches:
+            filtered_data.extend(matches)
+    return filtered_data
+
 # Function to save data to various file formats
 def save_data(scraped_data, file_format):
     try:
