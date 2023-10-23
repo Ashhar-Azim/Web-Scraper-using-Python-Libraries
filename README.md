@@ -31,7 +31,7 @@ Run the script:
 
 ```python main.py```
 
-##Usage
+## Usage
 
 1. `Provide the following information in the GUI:
 
@@ -48,11 +48,11 @@ Run the script:
 
 4. The filtered results will be displayed in the text area below.
 
-##Configuration
+## Configuration
 
 The script can be configured with user agents, rate limiting parameters, and cache settings in the source code.
 
-##Scraping Process
+## Scraping Process
 
 . The script starts by checking if the page is allowed by the robots.txt file using user agents.
 . Cached data is loaded if available to reduce redundant requests.
@@ -60,20 +60,20 @@ The script can be configured with user agents, rate limiting parameters, and cac
 . Scraped data is cached to avoid repetitive requests.
 . The data can be saved in various formats (JSON, CSV, XML, TXT).
 
-##Filtering Data
+## Filtering Data
 
 . After scraping, you can search and filter the data by entering search terms and clicking "Search and Filter."
 . Filtered results are displayed in the text area.
 
-##Throttling
+## Throttling
 
 . You can set the request delay in seconds to control the rate of scraping. Use the "Set Request Delay" button to adjust this value.
 
-##Contributing
+## Contributing
 
 . Feel free to contribute to this project by opening issues or pull requests on the [GitHub repository](https://github.com/Ashhar-Azim/Web-Scraper-using-Python-Libraries).
 
-##License
+## License
 
 . MIT License
 
