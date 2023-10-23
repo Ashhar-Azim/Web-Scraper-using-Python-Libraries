@@ -35,12 +35,12 @@ Run the script:
 
 1. `Provide the following information in the GUI:
 
-. URL: Enter the URL of the web page you want to scrape.
-. HTML Element: Specify the HTML element you want to scrape (e.g., "p", "h1", "div").
-. Relevance Keywords (comma-separated): Enter keywords to filter relevant data.
-. Maximum Pages: Set the number of pages to scrape (for pagination).
-. Storage Format: Choose the format to save the scraped data (JSON, CSV, XML, or TXT).
-. Request Delay (seconds): Set the delay between requests.
+ - URL: Enter the URL of the web page you want to scrape.
+ - HTML Element: Specify the HTML element you want to scrape (e.g., "p", "h1", "div").
+ - Relevance Keywords (comma-separated): Enter keywords to filter relevant data.
+ - Maximum Pages: Set the number of pages to scrape (for pagination).
+ - Storage Format: Choose the format to save the scraped data (JSON, CSV, XML, or TXT).
+ - Request Delay (seconds): Set the delay between requests.
 
 2. Click the "Start Scraping" button to initiate the scraping process. You can monitor the progress using the progress bar.
 
