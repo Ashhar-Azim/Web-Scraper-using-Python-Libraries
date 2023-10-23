@@ -33,7 +33,7 @@ Run the script:
 
 ## Usage
 
-1. `Provide the following information in the GUI:
+1. Provide the following information in the GUI:
 
  - URL: Enter the URL of the web page you want to scrape.
  - HTML Element: Specify the HTML element you want to scrape (e.g., "p", "h1", "div").
@@ -54,28 +54,28 @@ The script can be configured with user agents, rate limiting parameters, and cac
 
 ## Scraping Process
 
-. The script starts by checking if the page is allowed by the robots.txt file using user agents.
-. Cached data is loaded if available to reduce redundant requests.
-. The specified web page is scraped, and data is collected based on the HTML element and relevance keywords.
-. Scraped data is cached to avoid repetitive requests.
-. The data can be saved in various formats (JSON, CSV, XML, TXT).
+ The script starts by checking if the page is allowed by the robots.txt file using user agents.
+ Cached data is loaded if available to reduce redundant requests.
+ The specified web page is scraped, and data is collected based on the HTML element and relevance keywords.
+ Scraped data is cached to avoid repetitive requests.
+ The data can be saved in various formats (JSON, CSV, XML, TXT).
 
 ## Filtering Data
 
-. After scraping, you can search and filter the data by entering search terms and clicking "Search and Filter."
-. Filtered results are displayed in the text area.
+ After scraping, you can search and filter the data by entering search terms and clicking "Search and Filter."
+ Filtered results are displayed in the text area.
 
 ## Throttling
 
-. You can set the request delay in seconds to control the rate of scraping. Use the "Set Request Delay" button to adjust this value.
+ You can set the request delay in seconds to control the rate of scraping. Use the "Set Request Delay" button to adjust this value.
 
 ## Contributing
 
-. Feel free to contribute to this project by opening issues or pull requests on the [GitHub repository](https://github.com/Ashhar-Azim/Web-Scraper-using-Python-Libraries).
+ Feel free to contribute to this project by opening issues or pull requests on the [GitHub repository](https://github.com/Ashhar-Azim/Web-Scraper-using-Python-Libraries).
 
 ## License
 
-. MIT License
+MIT License
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
