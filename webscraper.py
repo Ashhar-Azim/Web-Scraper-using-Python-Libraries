@@ -33,7 +33,7 @@ logger.addHandler(log_file_handler)
 # Create a console handler for real-time logging
 console_handler = logging.StreamHandler(sys.stdout)
 console_handler.setFormatter(log_formatter)
-logger.addHandler(console_handler))
+logger.addHandler(console_handler)
 #################################################
 
 # Directory to store cached data
@@ -42,13 +42,13 @@ if not os.path.exists(cache_directory):
     os.makedirs(cache_directory)
 
 # List of user agent headers for rotation
-USER_AGENTS = [
+user_agents = [
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
     # Add more user agents here
 ]
 
 # Rate limiting parameters
-REQUEST_DELAY = 2  # Delay between requests in seconds
+request_delay = 2  # Delay between requests in seconds
 
 # Function to check robots.txt compliance
 def is_allowed_by_robots(url):
@@ -56,7 +56,7 @@ def is_allowed_by_robots(url):
         rp = robotparser.RobotFileParser()
         rp.set_url(urljoin(url, "/robots.txt"))
         rp.read()
-        return rp.can_fetch(USER_AGENTS[0], url)
+        return rp.can_fetch(user_agents[0], url)
     except Exception as e:
         print(f"An error occurred while checking robots.txt compliance for {url}: {e}")
         return False
@@ -98,7 +98,7 @@ def scrape_page(url, target_element, relevance_keywords, scraped_data, progress_
             logger.info(f"Loaded data from cache for {url}")
     else:
         try:
-            headers = {'User-Agent': random.choice(USER_AGENTS)}
+            headers = {'User-Agent': random.choice(user_agents)}
             response = requests.get(url, headers=headers)
             response.raise_for_status()
             soup = BeautifulSoup(response.text, 'html.parser')
@@ -129,9 +129,9 @@ def scrape_page(url, target_element, relevance_keywords, scraped_data, progress_
         except Exception as error:
             # Log a general error, including traceback
             logger.error(f"An error occurred while scraping the page: {error}", exc_info=True)
-        time.sleep(REQUEST_DELAY)
+        time.sleep(request_delay)
 
-    progress_var.set(len(scraped_data))
+    progress_var.set(len(scraped_data)
 
 # Function to apply regular expressions to the scraped data
 def apply_regular_expression(scraped_data, regex_pattern):
@@ -199,6 +199,8 @@ def search_and_filter_data(scraped_data):
 # Function to start the scraping process
 def start_scraping(progress_var):
     try:
+        # Get user-defined request delay from the input field
+        REQUEST_DELAY = float(request_delay_entry.get())
         url = url_entry.get()
         target_element = element_entry.get()
         relevance_keywords = keyword_entry.get().split(',')
@@ -270,8 +272,13 @@ pages_entry = ttk.Entry(root, width=5)
 format_label = ttk.Label(root, text="Storage Format:")
 format_var = tk.StringVar(value="json")
 format_options = ttk.Combobox(root, textvariable=format_var, values=["json", "csv", "xml", "txt"])
-start_button = ttk.Button(root, text="Start Scraping", command=start_scraping_thread)  # Use the threading version of the function
 
+# Input field for request delay
+delay_label = ttk.Label(root, text="Request Delay (seconds):")
+request_delay_entry = ttk.Entry(root)
+request_delay_entry.insert(0, "2")  # Set a default value
+
+start_button = ttk.Button(root, text="Start Scraping", command=start_scraping_thread)  # Use the threading version of the function
 
 search_label = ttk.Label(root, text="Search Data:")
 search_entry = ttk.Entry(root, width=40)
