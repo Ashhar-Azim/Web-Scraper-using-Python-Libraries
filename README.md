@@ -75,18 +75,6 @@ The script can be configured with user agents, rate limiting parameters, and cac
 
 ## License
 
-MIT License
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-1. The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-2. Users of the Software are responsible for complying with the rules and terms of use set by the respective websites, services, or platforms where the Software is applied. It is the user's responsibility to ensure that the use of the Software aligns with the website's rules and internet ethics.
-
-3. The Software is provided "as is," without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose, and noninfringement. In no event shall the authors or copyright holders be liable for any claim, damages, or other liability, whether in an action of contract, tort, or otherwise, arising from, out of, or in connection with the Software or the use or other dealings in the Software.
-
-By using this software, you agree to abide by the terms and conditions of this license.
-
-For more details, refer to the full text of the [MIT License](https://opensource.org/licenses/MIT)
+[MIT License](https://github.com/Ashhar-Azim/Web-Scraper-using-Python-Libraries/blob/main/LICENSE)
 
 
