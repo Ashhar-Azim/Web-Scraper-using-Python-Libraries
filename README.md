@@ -12,7 +12,6 @@ This is a web scraping tool that allows you to extract and store data from web p
 - [Filtering Data](#filtering-data)
 - [Throttling](#throttling)
 - [Contributing](#contributing)
-- [License](#license)
 
 ## Requirements
 
@@ -73,8 +72,5 @@ The script can be configured with user agents, rate limiting parameters, and cac
 
  Feel free to contribute to this project by opening issues or pull requests on the [GitHub repository](https://github.com/Ashhar-Azim/Web-Scraper-using-Python-Libraries).
 
-## License
-
-[MIT License](https://github.com/Ashhar-Azim/Web-Scraper-using-Python-Libraries/blob/main/LICENSE)
 
 
