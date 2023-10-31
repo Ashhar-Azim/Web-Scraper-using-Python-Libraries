@@ -70,7 +70,7 @@ The script can be configured with user agents, rate limiting parameters, and cac
 
 ## Contributing
 
- Feel free to contribute to this project by opening issues or pull requests on the [GitHub repository](https://github.com/Ashhar-Azim/Web-Scraper-using-Python-Libraries).
+ Feel free to contribute to this project by opening issues or pull requests
 
 
 
