@@ -320,4 +320,4 @@ progress_bar = ttk.Progressbar(root, variable=progress_var, maximum=100)
 progress_label.grid(row=11, column=0, pady=10)
 progress_bar.grid(row=11, column=1, padx=10, pady=10)
 
-root.mainloop()
+root.mainloop() #implement program with GUI
