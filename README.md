@@ -30,7 +30,7 @@ Run the script:
 
 ```python main.py```
 
-## Usage
+## Usage 
 
 1. Provide the following information in the GUI:
 
